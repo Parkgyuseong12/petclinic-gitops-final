@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Seungkiii/petclinic-gitops.git # 본인 주소
+    repoURL: https://github.com/Parkgyuseong12/petclinic-gitops-final.git # 본인 주소
     targetRevision: HEAD
     path: infrastructure/rabbitmq
     
