@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  repository: 175321200489.dkr.ecr.ap-northeast-2.amazonaws.com/spring-petclinic-vets-service
+  tag: latest
+  pullPolicy: Always
+
+database:
+  url: jdbc:mysql://petclinic-db-dev.ccitclnvbmiv.ap-northeast-2.rds.amazonaws.com:3306/vets_db
+  username: admin
+  passwordSecret: db-secret
+  passwordKey: password

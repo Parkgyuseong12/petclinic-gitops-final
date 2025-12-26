@@ -5,7 +5,7 @@ metadata:
   labels:
     app: petclinic-frontend
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
       app: petclinic-frontend
@@ -14,10 +14,12 @@ spec:
       labels:
         app: petclinic-frontend
     spec:
+      imagePullSecrets:
+        - name: ecr-registry-secret
       containers:
         - name: frontend
-          image: <path:petclinic/inputs#AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/petclinic-frontend:v5.0.9
-          imagePullPolicy: Always
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
           ports:
             - containerPort: 80
               name: http
@@ -48,7 +50,7 @@ metadata:
   labels:
     app: petclinic-frontend
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type | default "ClusterIP" }}
   selector:
     app: petclinic-frontend
   ports:
@@ -56,4 +58,3 @@ spec:
       port: 80
       targetPort: 80
       name: http
-

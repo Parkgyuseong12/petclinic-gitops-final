@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: petclinic-api-gateway
+  name: petclinic-visits
   labels:
-    app: petclinic-api-gateway
+    app: petclinic-visits
 spec:
   replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
-      app: petclinic-api-gateway
+      app: petclinic-visits
   template:
     metadata:
       labels:
-        app: petclinic-api-gateway
+        app: petclinic-visits
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: "/actuator/prometheus"
@@ -21,7 +21,7 @@ spec:
       imagePullSecrets:
         - name: ecr-registry-secret
       containers:
-        - name: api-gateway
+        - name: visits-service
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | default "Always" }}
           ports:
@@ -29,17 +29,26 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: mysql
+            - name: SPRING_DATASOURCE_URL
+              value: {{ .Values.database.url | quote }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.database.username | quote }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.passwordSecret }}
+                  key: {{ .Values.database.passwordKey }}
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 20
+            initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 90
             periodSeconds: 15
           resources:
             requests:
@@ -52,13 +61,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: petclinic-api-gateway
+  name: petclinic-visits
   labels:
-    app: petclinic-api-gateway
+    app: petclinic-visits
 spec:
-  type: {{ .Values.service.type | default "ClusterIP" }}
+  type: ClusterIP
   selector:
-    app: petclinic-api-gateway
+    app: petclinic-visits
   ports:
     - name: http
       protocol: TCP
