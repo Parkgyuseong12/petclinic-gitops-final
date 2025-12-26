@@ -6,14 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Parkgyuseong12/petclinic-gitops-final.git # 본인 주소
+    repoURL: https://github.com/Parkgyuseong12/petclinic-gitops-final.git
     targetRevision: HEAD
     path: apps/visits-service
-    
-    # [핵심] 우리가 만든 'avp-helm' 플러그인을 사용하라고 명시
-    plugin:
-      name: avp-helm
-      
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
