@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: 175321200489.dkr.ecr.ap-northeast-2.amazonaws.com/spring-petclinic-frontend
+  repository: 175321200489.dkr.ecr.ap-northeast-2.amazonaws.com/petclinic-frontend
   tag: latest
   pullPolicy: Always
 
