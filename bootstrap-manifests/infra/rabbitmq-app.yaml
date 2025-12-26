@@ -9,9 +9,6 @@ spec:
     repoURL: https://github.com/Parkgyuseong12/petclinic-gitops-final.git
     targetRevision: HEAD
     path: infrastructure/rabbitmq
-    helm:
-      valueFiles:
-        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
