@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: 175321200489.dkr.ecr.ap-northeast-2.amazonaws.com/spring-petclinic-customers-service
-  tag: e31fa1c
+  tag: 00b1b58
   pullPolicy: Always
 
 database:
